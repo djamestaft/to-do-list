@@ -2,27 +2,49 @@ import { track, TrackedArray } from 'ripple';
 
 export component App() {
 	<div class='container'>
+		let todos = new TrackedArray({
+			title: 'shower',
+			completed: false,
+		}, {
+			title: 'brush teeth',
+			completed: false,
+		}, {
+			title: 'get dressed',
+			completed: false,
+		}, {
+			title: 'cave golf booking',
+			completed: false,
+		});
+
 		<h1>{'Simple To do List!!!!'}</h1>
 		<div class='counter'>
-			let count = track(0);
+			let showDialog = track(false);
+			console.log('🚀 ~ showDialog:', showDialog);
+			let newTitle = track('');
 
-			<button class='add-btn' onClick={() => @count++}>{'Add Todo'}</button>
+			<button class='add-btn' onClick={() => @showDialog = true}>{'Add Todo'}</button>
+
+			if (@showDialog) {
+				<div class='dialog'>
+					<input type='text' placeholder='Enter todo title' value={@newTitle} onInput={e => newTitle = e.target.value} />
+					<button onClick={() => {
+							if (@newTitle.trim()) {
+								todos.push({
+									title: @newTitle,
+									completed: false,
+								});
+								@newTitle = '';
+								@showDialog = false;
+							}
+						}}>{'Add'}</button>
+					<button onClick={() => {
+							@showDialog = false;
+							@newTitle = '';
+						}}>{'Cancel'}</button>
+				</div>
+			}
 		</div>
 		<div>
-			let todos = new TrackedArray({
-				title: 'shower',
-				completed: false,
-			}, {
-				title: 'brush teeth',
-				completed: false,
-			}, {
-				title: 'get dressed',
-				completed: false,
-			}, {
-				title: 'cave golf booking',
-				completed: false,
-			});
-
 			<p>{'This is a basic Ripple application template.'}</p>
 			<div>for (const todo of todos; index i) {
 				const id = i
@@ -96,7 +118,7 @@ export component App() {
 		  .add-btn {
 			background-color: #28a745;
 		}
-		  .add-btn/* Unknown: PseudoClassSelector */ {
+		  .add-btn {
 			background-color: #218838;
 		}
 		  .count {
