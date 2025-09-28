@@ -26,7 +26,7 @@ export component App() {
 
 			if (@showDialog) {
 				<div class='dialog'>
-					<input type='text' placeholder='Enter todo title' value={@newTitle} onInput={e => newTitle = e.target.value} />
+					<input type='text' placeholder='Enter todo title' value={@newTitle} onInput={e => @newTitle = e.target.value} />
 					<button onClick={() => {
 							if (@newTitle.trim()) {
 								todos.push({
@@ -47,13 +47,11 @@ export component App() {
 		<div>
 			<p>{'This is a basic Ripple application template.'}</p>
 			<div>for (const todo of todos; index i) {
-				const id = i
-
 				<div class='todo-item'><div class='todo-content'>
 					<span class={todo.completed ? 'completed' : ''}>{todo.title}</span>
 					<div class='todo-actions'>
 						<input type='checkbox' checked={todo.completed} onChange={() => todo.completed = !todo.completed} />
-						<button onClick={() => todos.splice(id, 1)}>{'Remove'}</button>
+						<button onClick={() => todos.splice(i, 1)}>{'Remove'}</button>
 					</div>
 				</div></div>
 			}</div>
