@@ -2,19 +2,13 @@ import { track, TrackedArray } from 'ripple';
 
 export component App() {
 	<div class='container'>
-		let todos = new TrackedArray({
-			title: 'shower',
-			completed: false,
-		}, {
-			title: 'brush teeth',
-			completed: false,
-		}, {
-			title: 'get dressed',
-			completed: false,
-		}, {
-			title: 'cave golf booking',
-			completed: false,
-		});
+		let todos = new TrackedArray(
+			track({ title: 'shower', $completed: false }),
+			track({ title: 'brush teeth', $completed: true }),
+			track({ title: 'get dressed', $completed: false }),
+			track({ title: 'cave golf booking', $completed: false })
+		);
+		console.log('🚀 ~ todos:', todos);
 
 		<h1>{'Simple To do List!!!!'}</h1>
 		<div class='counter'>
@@ -29,10 +23,10 @@ export component App() {
 					<input type='text' placeholder='Enter todo title' value={@newTitle} onInput={e => @newTitle = e.target.value} />
 					<button onClick={() => {
 							if (@newTitle.trim()) {
-								todos.push({
+								todos.push(track({
 									title: @newTitle,
-									completed: false,
-								});
+									$completed: false,
+								}));
 								@newTitle = '';
 								@showDialog = false;
 							}
@@ -46,15 +40,23 @@ export component App() {
 		</div>
 		<div>
 			<p>{'This is a basic Ripple application template.'}</p>
-			<div>for (const todo of todos; index i) {
-				<div class='todo-item'><div class='todo-content'>
-					<span class={todo.completed ? 'completed' : ''}>{todo.title}</span>
-					<div class='todo-actions'>
-						<input type='checkbox' checked={todo.completed} onChange={() => todo.completed = !todo.completed} />
-						<button onClick={() => todos.splice(i, 1)}>{'Remove'}</button>
+			<div>
+				for (const todo of todos; index ind) {
+					console.log("🚀 ~ todo:", todo)
+					<div key={ind} class={'todo-item' + (todo.$completed === true ? ' completed' : '')}>
+						<div class='todo-content'>
+							<span>{@todo.title}</span>
+							<div class='todo-actions'>
+								<input type='checkbox' checked={todo.$completed} onChange={() => {
+										todo.$completed = !todo.$completed;
+										console.log('🚀 ~ todo:', todos);
+									}} />
+								<button onClick={() => todos.splice(ind, 1)}>{'Remove'}</button>
+							</div>
+						</div>
 					</div>
-				</div></div>
-			}</div>
+				}
+			</div>
 		</div>
 	</div>
 
@@ -98,7 +100,7 @@ export component App() {
 			align-items: center;
 			gap: 12px;
 		}
-		  .completed {
+		  .todo-item.completed span {
 			text-decoration: line-through;
 			color: #6c757d;
 		}
