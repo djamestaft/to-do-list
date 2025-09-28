@@ -1,5 +1,8 @@
 # Ripple Basic Template
 
+<img width="1232" height="786" alt="image" src="https://github.com/user-attachments/assets/1e69a6ca-1a29-416a-9d2a-047b238a31e3" />
+
+
 A minimal Ripple application template with TypeScript and Vite.
 
 ## Getting Started
